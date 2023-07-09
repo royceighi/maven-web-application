@@ -2,7 +2,7 @@ node{
   def mavenHome = tool name: 'maven3.9.3'
   stage('1.CodeClone'){
   //git "https://github.com/royceighi/maven-web-application.git"
-   git branch: 'develo', url: 'https://github.com/royceighi/maven-web-application.git'
+   git branch: 'development', url: 'https://github.com/royceighi/maven-web-application.git'
   }
   stage('2Test+build'){
     sh "${mavenHome}/bin/mvn clean package"
