@@ -1,0 +1,27 @@
+node{
+  def mavenHome = tool name: 'maven3.9.3'
+  stage('1Clone'){
+    //git "https://github.com/royceighi/maven-web-application"
+    git credentialsId: 'githubcredentials', url: 'https://github.com/royceighi/maven-web-application'
+  }
+  stage('2Test+build'){
+    sh "${mavenHome}/bin/mvn clean package"
+  }
+  stage('3SonarQube'){
+    sh "${mavenHome}/bin/mvn sonar:sonar"
+  }
+  stage('4UploadArtifacts'){
+    sh "${mavenHome}/bin/mvn deploy"
+  }
+  stage('5Deploy'){
+    deploy adapters: [tomcat9(credentialsId: 'MyLogin', path: '', url: 'http://54.86.61.103:8177/')], contextPath: null, war: 'target/*war'
+  }
+  
+  stage('6Notification'){
+    emailext body: '''Hello Engineer,
+
+ See build status 
+
+ Troyd4U''', recipientProviders: [developers(), upstreamDevelopers(), contributor()], subject: 'build status'
+  }
+}
