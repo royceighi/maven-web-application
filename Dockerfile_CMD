@@ -1,0 +1,5 @@
+Dockerfile_CMD:  
+  FROM tomcat:9.0.71-jdk8-corretto-al2
+  ADD target/tesla.war  /usr/local/tomcat/   
+  CMD sh catalina.sh run 
+  CMD ["catalina", "run"]
